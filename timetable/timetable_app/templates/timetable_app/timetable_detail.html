@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timetable for {{ student_group.name }}</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7f6;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            background-color: #fff;
+            padding: 20px 40px;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+            overflow-x: auto; /* For responsiveness on small screens */
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            table-layout: fixed;
+        }
+        th, td {
+            border: 1px solid #dee2e6;
+            padding: 16px;
+            text-align: center;
+            height: 80px;
+        }
+        th {
+            background-color: #343a40;
+            color: white;
+            font-weight: 500;
+        }
+        .time-header {
+            background-color: #f8f9fa;
+            font-weight: bold;
+            color: #495057;
+            vertical-align: middle;
+        }
+        .entry {
+            padding: 8px;
+            border-radius: 6px;
+            background-color: #e9f7fd;
+            border-left: 5px solid #007bff;
+            height: 100%;
+            box-sizing: border-box;
+        }
+        .subject {
+            font-weight: bold;
+            display: block;
+            color: #0056b3;
+            font-size: 1.05em;
+        }
+        .teacher, .room {
+            font-size: 0.9em;
+            color: #555;
+            display: block;
+            margin-top: 4px;
+        }
+        .no-entry {
+            color: #adb5bd;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Timetable for {{ student_group.name }}</h1>
+
+    {% if schedule_grid %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    {% for day in days %}
+                        <th>{{ day }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in schedule_grid %}
+                    <tr>
+                        <td class="time-header">{{ row.time }}</td>
+                        {% for entry in row.entries %}
+                            <td>
+                                {% if entry %}
+                                    <div class="entry">
+                                        <span class="subject">{{ entry.subject.name }}</span>
+                                        <span class="teacher">{{ entry.teacher.name }}</span>
+                                        <span class="room">Room: {{ entry.classroom.room_number }}</span>
+                                    </div>
+                                {% else %}
+                                    <span class="no-entry">-</span>
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p style="text-align:center;">No timetable entries have been created for this group yet.</p>
+    {% endif %}
+
+</div>
+
+<div class="footer">
+    <p>Digital Timetable Management System</p>
+</div>
+
+</body>
+</html>
